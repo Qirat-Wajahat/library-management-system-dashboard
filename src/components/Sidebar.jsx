@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "../styles/Sidebar.css";
 
 function Sidebar() {
@@ -7,20 +8,17 @@ function Sidebar() {
       <nav>
         <ul>
           <li className="item text-center">
-            <i className="bi bi-house h5"></i>{" "}
-            <span className="h6 fw-semibold">Home</span>
+            <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>
+              <i className="bi h5"></i>{" "}
+              <span className="h6 fw-semibold">Carousel</span>
+            </NavLink>
           </li>
-          <a
-            href="https://library-management-system-mujtaba-ali21s-projects.vercel.app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-decoration-none text-dark"
-          >
-            <li className="item text-center">
-              <i className="bi bi-bookshelf h5"></i>{" "}
-              <span className="h6 fw-semibold">Library</span>
-            </li>
-          </a>
+          <li className="item text-center">
+            <NavLink to="/services" className={({ isActive }) => isActive ? "active" : ""}>
+              <i className="bi h5"></i>{" "}
+              <span className="h6 fw-semibold">Our Services</span>
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </aside>

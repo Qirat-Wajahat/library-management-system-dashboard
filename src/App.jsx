@@ -1,90 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
 import Table from "./components/Table";
-import db from "./firebase/firebaseConfig";
-import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import Carousel from "./pages/Carousel"; // Create this component
+import Services from "./pages/Services"; // Create this component
 import "./styles/App.css";
 
 function App() {
-  const [books, setBooks] = useState([]);
-  const [filteredBooks, setFilteredBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const booksCollection = collection(db, "books");
-
-  // Fetch books from Firestore
-  useEffect(() => {
-    const unsubscribe = onSnapshot(booksCollection, (snapshot) => {
-      const booksData = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setBooks(booksData);
-      setFilteredBooks(booksData);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  // Filter books based on search term
-  useEffect(() => {
-    const results = books.filter(
-      (book) =>
-        book.Heading.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        book.Paragraph.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredBooks(results);
-  }, [searchTerm, books]);
-
-  // Add a new book
-  const addBook = async (newBook) => {
-    await addDoc(booksCollection, newBook);
-  };
-
-  // Update a book
-  const updateBook = async (updatedBook) => {
-    const bookDoc = doc(db, "books", updatedBook.id);
-    await updateDoc(bookDoc, updatedBook);
-  };
-
-  // Delete a book
-  const deleteBook = async (id) => {
-    const bookDoc = doc(db, "books", id);
-    await deleteDoc(bookDoc);
-  };
-
   return (
-    <div className="dashboard">
-      <Sidebar />
-      <div className="main-content">
-        <Table
-          data={filteredBooks}
-          setSearchTerm={setSearchTerm}
-          addItem={addBook}
-          updateItem={updateBook}
-          deleteItem={deleteBook}
-          columns={[
-            { header: "Heading", accessor: "Heading" }, // Direct field mapping
-            { header: "Paragraph", accessor: "Paragraph" }, // Direct field mapping
-            {
-              header: "Optional Paragraph",
-              accessor: (item) =>
-                item.optionalParagraph ? item.optionalParagraph : "No optional paragraph",
-            }, // Optional field
-            {
-              header: "Image",
-              accessor: (item) => (
-                <img
-                  src={item.imageURL}
-                  alt={`${item.Heading} thumbnail`}
-                  style={{ width: "100px", height: "auto", borderRadius: "8px" }}
-                />
-              ),
-            }, // Image URL
-          ]}
-        />
+    <Router>
+      <div className="dashboard">
+        <Sidebar />
+        <div className="main-content">
+          {/* <Header /> */}
+        
+          <Routes>
+            <Route path="/" element={<Carousel />} />
+            <Route path="/services" element={<Services />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
 export default App;
+

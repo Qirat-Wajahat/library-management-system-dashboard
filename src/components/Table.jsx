@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import "../styles/Table.css";
 
-function Table({ data, setSearchTerm, addItem, updateItem, deleteItem, columns }) {
+function Table({ title, data, setSearchTerm, addItem, updateItem, deleteItem, columns }) {
   const [newItem, setNewItem] = useState({});
   const [selectedItem, setSelectedItem] = useState(null);
 
   return (
     <section className="table-section">
+      {/* Title Section */}
+      {title && <h2 className="table-title">{title}</h2>}
+
       <div className="container-fluid mb-3">
         {/* Search Input */}
         <input
@@ -86,7 +89,7 @@ function Table({ data, setSearchTerm, addItem, updateItem, deleteItem, columns }
                 placeholder="Heading"
                 className="form-control mb-2"
                 onChange={(e) =>
-                  setNewItem({ ...newItem, Heading: e.target.value }) // Fixed key
+                  setNewItem({ ...newItem, Heading: e.target.value })
                 }
               />
               <input
@@ -94,7 +97,7 @@ function Table({ data, setSearchTerm, addItem, updateItem, deleteItem, columns }
                 placeholder="Paragraph"
                 className="form-control mb-2"
                 onChange={(e) =>
-                  setNewItem({ ...newItem, Paragraph: e.target.value }) // Fixed key
+                  setNewItem({ ...newItem, Paragraph: e.target.value })
                 }
               />
               <input
